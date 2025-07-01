@@ -8,8 +8,8 @@ function App() {
   return (
     <>
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        <Outlet></Outlet>
         <Toaster />
+        <Outlet />
       </GoogleOAuthProvider>
     </>
   );

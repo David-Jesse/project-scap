@@ -9,27 +9,69 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Auth_routesJobsIdRouteImport } from './routes/_auth_routes/jobs.$id'
+import { Route as Auth_routesJobAlertIdRouteImport } from './routes/_auth_routes/job-alert.$id'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const Auth_routesJobsIdRoute = Auth_routesJobsIdRouteImport.update({
+  id: '/_auth_routes/jobs/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Auth_routesJobAlertIdRoute = Auth_routesJobAlertIdRouteImport.update({
+  id: '/_auth_routes/job-alert/$id',
+  path: '/job-alert/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
+  '/jobs/$id': typeof Auth_routesJobsIdRoute
+}
+export interface FileRoutesByTo {
+  '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
+  '/jobs/$id': typeof Auth_routesJobsIdRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_auth_routes/job-alert/$id': typeof Auth_routesJobAlertIdRoute
+  '/_auth_routes/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/job-alert/$id' | '/jobs/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/job-alert/$id' | '/jobs/$id'
+  id: '__root__' | '/_auth_routes/job-alert/$id' | '/_auth_routes/jobs/$id'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  Auth_routesJobAlertIdRoute: typeof Auth_routesJobAlertIdRoute
+  Auth_routesJobsIdRoute: typeof Auth_routesJobsIdRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_auth_routes/jobs/$id': {
+      id: '/_auth_routes/jobs/$id'
+      path: '/jobs/$id'
+      fullPath: '/jobs/$id'
+      preLoaderRoute: typeof Auth_routesJobsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth_routes/job-alert/$id': {
+      id: '/_auth_routes/job-alert/$id'
+      path: '/job-alert/$id'
+      fullPath: '/job-alert/$id'
+      preLoaderRoute: typeof Auth_routesJobAlertIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  Auth_routesJobAlertIdRoute: Auth_routesJobAlertIdRoute,
+  Auth_routesJobsIdRoute: Auth_routesJobsIdRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
