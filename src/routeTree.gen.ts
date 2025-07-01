@@ -9,68 +9,135 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Auth_routesRouteImport } from './routes/_auth_routes'
+import { Route as Auth_routesProfileRouteImport } from './routes/_auth_routes/profile'
+import { Route as Auth_routesLoginRouteImport } from './routes/_auth_routes/login'
 import { Route as Auth_routesJobsIdRouteImport } from './routes/_auth_routes/jobs.$id'
 import { Route as Auth_routesJobAlertIdRouteImport } from './routes/_auth_routes/job-alert.$id'
 
-const Auth_routesJobsIdRoute = Auth_routesJobsIdRouteImport.update({
-  id: '/_auth_routes/jobs/$id',
-  path: '/jobs/$id',
+const Auth_routesRoute = Auth_routesRouteImport.update({
+  id: '/_auth_routes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Auth_routesProfileRoute = Auth_routesProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => Auth_routesRoute,
+} as any)
+const Auth_routesLoginRoute = Auth_routesLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => Auth_routesRoute,
+} as any)
+const Auth_routesJobsIdRoute = Auth_routesJobsIdRouteImport.update({
+  id: '/jobs/$id',
+  path: '/jobs/$id',
+  getParentRoute: () => Auth_routesRoute,
+} as any)
 const Auth_routesJobAlertIdRoute = Auth_routesJobAlertIdRouteImport.update({
-  id: '/_auth_routes/job-alert/$id',
+  id: '/job-alert/$id',
   path: '/job-alert/$id',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => Auth_routesRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/login': typeof Auth_routesLoginRoute
+  '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRoutesByTo {
+  '/login': typeof Auth_routesLoginRoute
+  '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_auth_routes': typeof Auth_routesRouteWithChildren
+  '/_auth_routes/login': typeof Auth_routesLoginRoute
+  '/_auth_routes/profile': typeof Auth_routesProfileRoute
   '/_auth_routes/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/_auth_routes/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/job-alert/$id' | '/jobs/$id'
+  fullPaths: '/login' | '/profile' | '/job-alert/$id' | '/jobs/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/job-alert/$id' | '/jobs/$id'
-  id: '__root__' | '/_auth_routes/job-alert/$id' | '/_auth_routes/jobs/$id'
+  to: '/login' | '/profile' | '/job-alert/$id' | '/jobs/$id'
+  id:
+    | '__root__'
+    | '/_auth_routes'
+    | '/_auth_routes/login'
+    | '/_auth_routes/profile'
+    | '/_auth_routes/job-alert/$id'
+    | '/_auth_routes/jobs/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  Auth_routesJobAlertIdRoute: typeof Auth_routesJobAlertIdRoute
-  Auth_routesJobsIdRoute: typeof Auth_routesJobsIdRoute
+  Auth_routesRoute: typeof Auth_routesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth_routes': {
+      id: '/_auth_routes'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof Auth_routesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth_routes/profile': {
+      id: '/_auth_routes/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof Auth_routesProfileRouteImport
+      parentRoute: typeof Auth_routesRoute
+    }
+    '/_auth_routes/login': {
+      id: '/_auth_routes/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof Auth_routesLoginRouteImport
+      parentRoute: typeof Auth_routesRoute
+    }
     '/_auth_routes/jobs/$id': {
       id: '/_auth_routes/jobs/$id'
       path: '/jobs/$id'
       fullPath: '/jobs/$id'
       preLoaderRoute: typeof Auth_routesJobsIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof Auth_routesRoute
     }
     '/_auth_routes/job-alert/$id': {
       id: '/_auth_routes/job-alert/$id'
       path: '/job-alert/$id'
       fullPath: '/job-alert/$id'
       preLoaderRoute: typeof Auth_routesJobAlertIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof Auth_routesRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
+interface Auth_routesRouteChildren {
+  Auth_routesLoginRoute: typeof Auth_routesLoginRoute
+  Auth_routesProfileRoute: typeof Auth_routesProfileRoute
+  Auth_routesJobAlertIdRoute: typeof Auth_routesJobAlertIdRoute
+  Auth_routesJobsIdRoute: typeof Auth_routesJobsIdRoute
+}
+
+const Auth_routesRouteChildren: Auth_routesRouteChildren = {
+  Auth_routesLoginRoute: Auth_routesLoginRoute,
+  Auth_routesProfileRoute: Auth_routesProfileRoute,
   Auth_routesJobAlertIdRoute: Auth_routesJobAlertIdRoute,
   Auth_routesJobsIdRoute: Auth_routesJobsIdRoute,
+}
+
+const Auth_routesRouteWithChildren = Auth_routesRoute._addFileChildren(
+  Auth_routesRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  Auth_routesRoute: Auth_routesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
