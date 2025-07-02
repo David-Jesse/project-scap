@@ -9,15 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as Auth_routesRouteImport } from './routes/_auth_routes'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as Auth_routesProfileRouteImport } from './routes/_auth_routes/profile'
 import { Route as Auth_routesLoginRouteImport } from './routes/_auth_routes/login'
+import { Route as Auth_routesDashboardRouteImport } from './routes/_auth_routes/dashboard'
 import { Route as Auth_routesCreateAlertRouteImport } from './routes/_auth_routes/create-alert'
 import { Route as Auth_routesJobsIdRouteImport } from './routes/_auth_routes/jobs.$id'
 import { Route as Auth_routesJobAlertIdRouteImport } from './routes/_auth_routes/job-alert.$id'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Auth_routesRoute = Auth_routesRouteImport.update({
   id: '/_auth_routes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Auth_routesProfileRoute = Auth_routesProfileRouteImport.update({
@@ -28,6 +41,11 @@ const Auth_routesProfileRoute = Auth_routesProfileRouteImport.update({
 const Auth_routesLoginRoute = Auth_routesLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => Auth_routesRoute,
+} as any)
+const Auth_routesDashboardRoute = Auth_routesDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => Auth_routesRoute,
 } as any)
 const Auth_routesCreateAlertRoute = Auth_routesCreateAlertRouteImport.update({
@@ -47,14 +65,20 @@ const Auth_routesJobAlertIdRoute = Auth_routesJobAlertIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/signup': typeof SignupRoute
   '/create-alert': typeof Auth_routesCreateAlertRoute
+  '/dashboard': typeof Auth_routesDashboardRoute
   '/login': typeof Auth_routesLoginRoute
   '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/signup': typeof SignupRoute
   '/create-alert': typeof Auth_routesCreateAlertRoute
+  '/dashboard': typeof Auth_routesDashboardRoute
   '/login': typeof Auth_routesLoginRoute
   '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
@@ -62,8 +86,11 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_auth_routes': typeof Auth_routesRouteWithChildren
+  '/signup': typeof SignupRoute
   '/_auth_routes/create-alert': typeof Auth_routesCreateAlertRoute
+  '/_auth_routes/dashboard': typeof Auth_routesDashboardRoute
   '/_auth_routes/login': typeof Auth_routesLoginRoute
   '/_auth_routes/profile': typeof Auth_routesProfileRoute
   '/_auth_routes/job-alert/$id': typeof Auth_routesJobAlertIdRoute
@@ -72,17 +99,31 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/signup'
     | '/create-alert'
+    | '/dashboard'
     | '/login'
     | '/profile'
     | '/job-alert/$id'
     | '/jobs/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/create-alert' | '/login' | '/profile' | '/job-alert/$id' | '/jobs/$id'
+  to:
+    | '/'
+    | '/signup'
+    | '/create-alert'
+    | '/dashboard'
+    | '/login'
+    | '/profile'
+    | '/job-alert/$id'
+    | '/jobs/$id'
   id:
     | '__root__'
+    | '/'
     | '/_auth_routes'
+    | '/signup'
     | '/_auth_routes/create-alert'
+    | '/_auth_routes/dashboard'
     | '/_auth_routes/login'
     | '/_auth_routes/profile'
     | '/_auth_routes/job-alert/$id'
@@ -90,16 +131,32 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   Auth_routesRoute: typeof Auth_routesRouteWithChildren
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth_routes': {
       id: '/_auth_routes'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof Auth_routesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth_routes/profile': {
@@ -114,6 +171,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof Auth_routesLoginRouteImport
+      parentRoute: typeof Auth_routesRoute
+    }
+    '/_auth_routes/dashboard': {
+      id: '/_auth_routes/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof Auth_routesDashboardRouteImport
       parentRoute: typeof Auth_routesRoute
     }
     '/_auth_routes/create-alert': {
@@ -142,6 +206,7 @@ declare module '@tanstack/react-router' {
 
 interface Auth_routesRouteChildren {
   Auth_routesCreateAlertRoute: typeof Auth_routesCreateAlertRoute
+  Auth_routesDashboardRoute: typeof Auth_routesDashboardRoute
   Auth_routesLoginRoute: typeof Auth_routesLoginRoute
   Auth_routesProfileRoute: typeof Auth_routesProfileRoute
   Auth_routesJobAlertIdRoute: typeof Auth_routesJobAlertIdRoute
@@ -150,6 +215,7 @@ interface Auth_routesRouteChildren {
 
 const Auth_routesRouteChildren: Auth_routesRouteChildren = {
   Auth_routesCreateAlertRoute: Auth_routesCreateAlertRoute,
+  Auth_routesDashboardRoute: Auth_routesDashboardRoute,
   Auth_routesLoginRoute: Auth_routesLoginRoute,
   Auth_routesProfileRoute: Auth_routesProfileRoute,
   Auth_routesJobAlertIdRoute: Auth_routesJobAlertIdRoute,
@@ -161,7 +227,9 @@ const Auth_routesRouteWithChildren = Auth_routesRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   Auth_routesRoute: Auth_routesRouteWithChildren,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
