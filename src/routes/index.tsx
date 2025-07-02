@@ -4,8 +4,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/gsap-core";
 import { TextPlugin } from "gsap/all";
 import SplitType from "split-type";
-import recommend from "../../assets/recommend.svg";
-import recycle from "../../assets/recycle.svg";
+import recommend from "../assets/recommend.svg";
+import recycle from "../assets/recycle.svg";
 import FooterText from "../components/footer-text";
 
 gsap.registerPlugin(TextPlugin);
@@ -119,7 +119,7 @@ export const Index = () => {
             </p>
           </div>
           <Link to="/signup" id="cta" className="overflow-hidden">
-            <button className="h-[40px] rounded-[40px] bg-primary px-10 text-[1.25rem font-semibold text-[#fafafafa] md:h-[72px]">
+            <button className="h-[40px] rounded-[40px] bg-primary px-10 text-[1.25rem] font-semibold text-[#fafafafa] md:h-[72px]">
               get started
             </button>
           </Link>

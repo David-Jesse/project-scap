@@ -42,7 +42,7 @@ const FooterText = () => {
     <footer className="sticky bottom-3 mt-3 overflow-hidden">
       <p
         id="footer"
-        className="text-center text-[0.875rem] font-medium text-form md:text-[1.25rem]"
+        className="text-center text-[0.875rem] font-medium text-form_text md:text-[1.25rem]"
       >
         desgined & developed by{" "}
         <a href="https://mojola.notion.site/Mojola-Ojoniyi-5012964d6a1c4f958780a9d4e31a3cbe">
