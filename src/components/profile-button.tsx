@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "@tanstack/react-router";
-import UserIcon from "../assets/user-icon.svg?react";
+import UserIcon from "../assets/user.svg?react";
 
 const ProfileButton = () => {
   const data = useLoaderData({

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as Auth_routesRouteImport } from './routes/_auth_routes'
 import { Route as Auth_routesProfileRouteImport } from './routes/_auth_routes/profile'
 import { Route as Auth_routesLoginRouteImport } from './routes/_auth_routes/login'
+import { Route as Auth_routesCreateAlertRouteImport } from './routes/_auth_routes/create-alert'
 import { Route as Auth_routesJobsIdRouteImport } from './routes/_auth_routes/jobs.$id'
 import { Route as Auth_routesJobAlertIdRouteImport } from './routes/_auth_routes/job-alert.$id'
 
@@ -29,6 +30,11 @@ const Auth_routesLoginRoute = Auth_routesLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => Auth_routesRoute,
 } as any)
+const Auth_routesCreateAlertRoute = Auth_routesCreateAlertRouteImport.update({
+  id: '/create-alert',
+  path: '/create-alert',
+  getParentRoute: () => Auth_routesRoute,
+} as any)
 const Auth_routesJobsIdRoute = Auth_routesJobsIdRouteImport.update({
   id: '/jobs/$id',
   path: '/jobs/$id',
@@ -41,12 +47,14 @@ const Auth_routesJobAlertIdRoute = Auth_routesJobAlertIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/create-alert': typeof Auth_routesCreateAlertRoute
   '/login': typeof Auth_routesLoginRoute
   '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRoutesByTo {
+  '/create-alert': typeof Auth_routesCreateAlertRoute
   '/login': typeof Auth_routesLoginRoute
   '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
@@ -55,6 +63,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth_routes': typeof Auth_routesRouteWithChildren
+  '/_auth_routes/create-alert': typeof Auth_routesCreateAlertRoute
   '/_auth_routes/login': typeof Auth_routesLoginRoute
   '/_auth_routes/profile': typeof Auth_routesProfileRoute
   '/_auth_routes/job-alert/$id': typeof Auth_routesJobAlertIdRoute
@@ -62,12 +71,18 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/profile' | '/job-alert/$id' | '/jobs/$id'
+  fullPaths:
+    | '/create-alert'
+    | '/login'
+    | '/profile'
+    | '/job-alert/$id'
+    | '/jobs/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/profile' | '/job-alert/$id' | '/jobs/$id'
+  to: '/create-alert' | '/login' | '/profile' | '/job-alert/$id' | '/jobs/$id'
   id:
     | '__root__'
     | '/_auth_routes'
+    | '/_auth_routes/create-alert'
     | '/_auth_routes/login'
     | '/_auth_routes/profile'
     | '/_auth_routes/job-alert/$id'
@@ -101,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Auth_routesLoginRouteImport
       parentRoute: typeof Auth_routesRoute
     }
+    '/_auth_routes/create-alert': {
+      id: '/_auth_routes/create-alert'
+      path: '/create-alert'
+      fullPath: '/create-alert'
+      preLoaderRoute: typeof Auth_routesCreateAlertRouteImport
+      parentRoute: typeof Auth_routesRoute
+    }
     '/_auth_routes/jobs/$id': {
       id: '/_auth_routes/jobs/$id'
       path: '/jobs/$id'
@@ -119,6 +141,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface Auth_routesRouteChildren {
+  Auth_routesCreateAlertRoute: typeof Auth_routesCreateAlertRoute
   Auth_routesLoginRoute: typeof Auth_routesLoginRoute
   Auth_routesProfileRoute: typeof Auth_routesProfileRoute
   Auth_routesJobAlertIdRoute: typeof Auth_routesJobAlertIdRoute
@@ -126,6 +149,7 @@ interface Auth_routesRouteChildren {
 }
 
 const Auth_routesRouteChildren: Auth_routesRouteChildren = {
+  Auth_routesCreateAlertRoute: Auth_routesCreateAlertRoute,
   Auth_routesLoginRoute: Auth_routesLoginRoute,
   Auth_routesProfileRoute: Auth_routesProfileRoute,
   Auth_routesJobAlertIdRoute: Auth_routesJobAlertIdRoute,
