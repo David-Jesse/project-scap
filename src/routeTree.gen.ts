@@ -10,10 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as Auth_routesRouteImport } from './routes/_auth_routes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as Auth_routesProfileRouteImport } from './routes/_auth_routes/profile'
-import { Route as Auth_routesLoginRouteImport } from './routes/_auth_routes/login'
 import { Route as Auth_routesDashboardRouteImport } from './routes/_auth_routes/dashboard'
 import { Route as Auth_routesCreateAlertRouteImport } from './routes/_auth_routes/create-alert'
 import { Route as Auth_routesJobsIdRouteImport } from './routes/_auth_routes/jobs.$id'
@@ -22,6 +23,16 @@ import { Route as Auth_routesJobAlertIdRouteImport } from './routes/_auth_routes
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Auth_routesRoute = Auth_routesRouteImport.update({
@@ -36,11 +47,6 @@ const IndexRoute = IndexRouteImport.update({
 const Auth_routesProfileRoute = Auth_routesProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => Auth_routesRoute,
-} as any)
-const Auth_routesLoginRoute = Auth_routesLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => Auth_routesRoute,
 } as any)
 const Auth_routesDashboardRoute = Auth_routesDashboardRouteImport.update({
@@ -66,20 +72,22 @@ const Auth_routesJobAlertIdRoute = Auth_routesJobAlertIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/create-alert': typeof Auth_routesCreateAlertRoute
   '/dashboard': typeof Auth_routesDashboardRoute
-  '/login': typeof Auth_routesLoginRoute
   '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/jobs/$id': typeof Auth_routesJobsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/create-alert': typeof Auth_routesCreateAlertRoute
   '/dashboard': typeof Auth_routesDashboardRoute
-  '/login': typeof Auth_routesLoginRoute
   '/profile': typeof Auth_routesProfileRoute
   '/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/jobs/$id': typeof Auth_routesJobsIdRoute
@@ -88,10 +96,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth_routes': typeof Auth_routesRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_auth_routes/create-alert': typeof Auth_routesCreateAlertRoute
   '/_auth_routes/dashboard': typeof Auth_routesDashboardRoute
-  '/_auth_routes/login': typeof Auth_routesLoginRoute
   '/_auth_routes/profile': typeof Auth_routesProfileRoute
   '/_auth_routes/job-alert/$id': typeof Auth_routesJobAlertIdRoute
   '/_auth_routes/jobs/$id': typeof Auth_routesJobsIdRoute
@@ -100,20 +109,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/forgot-password'
+    | '/login'
     | '/signup'
     | '/create-alert'
     | '/dashboard'
-    | '/login'
     | '/profile'
     | '/job-alert/$id'
     | '/jobs/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/forgot-password'
+    | '/login'
     | '/signup'
     | '/create-alert'
     | '/dashboard'
-    | '/login'
     | '/profile'
     | '/job-alert/$id'
     | '/jobs/$id'
@@ -121,10 +132,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth_routes'
+    | '/forgot-password'
+    | '/login'
     | '/signup'
     | '/_auth_routes/create-alert'
     | '/_auth_routes/dashboard'
-    | '/_auth_routes/login'
     | '/_auth_routes/profile'
     | '/_auth_routes/job-alert/$id'
     | '/_auth_routes/jobs/$id'
@@ -133,6 +145,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   Auth_routesRoute: typeof Auth_routesRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -143,6 +157,20 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth_routes': {
@@ -164,13 +192,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof Auth_routesProfileRouteImport
-      parentRoute: typeof Auth_routesRoute
-    }
-    '/_auth_routes/login': {
-      id: '/_auth_routes/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof Auth_routesLoginRouteImport
       parentRoute: typeof Auth_routesRoute
     }
     '/_auth_routes/dashboard': {
@@ -207,7 +228,6 @@ declare module '@tanstack/react-router' {
 interface Auth_routesRouteChildren {
   Auth_routesCreateAlertRoute: typeof Auth_routesCreateAlertRoute
   Auth_routesDashboardRoute: typeof Auth_routesDashboardRoute
-  Auth_routesLoginRoute: typeof Auth_routesLoginRoute
   Auth_routesProfileRoute: typeof Auth_routesProfileRoute
   Auth_routesJobAlertIdRoute: typeof Auth_routesJobAlertIdRoute
   Auth_routesJobsIdRoute: typeof Auth_routesJobsIdRoute
@@ -216,7 +236,6 @@ interface Auth_routesRouteChildren {
 const Auth_routesRouteChildren: Auth_routesRouteChildren = {
   Auth_routesCreateAlertRoute: Auth_routesCreateAlertRoute,
   Auth_routesDashboardRoute: Auth_routesDashboardRoute,
-  Auth_routesLoginRoute: Auth_routesLoginRoute,
   Auth_routesProfileRoute: Auth_routesProfileRoute,
   Auth_routesJobAlertIdRoute: Auth_routesJobAlertIdRoute,
   Auth_routesJobsIdRoute: Auth_routesJobsIdRoute,
@@ -229,6 +248,8 @@ const Auth_routesRouteWithChildren = Auth_routesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   Auth_routesRoute: Auth_routesRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
